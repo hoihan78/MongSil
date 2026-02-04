@@ -64,14 +64,8 @@ class _InputScreenState extends ConsumerState<InputScreen> {
       return;
     }
 
-    // TODO: Navigate to interpretation/drawing screen
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('꿈 해몽을 시작합니다... ✨'),
-        backgroundColor: Color(0xFFB4D8F8),
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
+    // Navigate to processing screen
+    context.push('/processing', queryParameters: {'content': state.content});
   }
 
   @override

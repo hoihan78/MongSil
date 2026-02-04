@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'screens/home_screen.dart';
 import 'screens/input_screen.dart';
+import 'screens/processing_screen.dart';
+import 'screens/result_screen.dart';
 import 'theme/app_theme.dart';
 
 void main() {
@@ -27,6 +29,17 @@ class MongSilApp extends StatelessWidget {
         GoRoute(
           path: '/input',
           builder: (context, state) => const InputScreen(),
+        ),
+        GoRoute(
+          path: '/processing',
+          builder: (context, state) {
+            final content = state.uri.queryParameters['content'] ?? '';
+            return ProcessingScreen(dreamContent: content);
+          },
+        ),
+        GoRoute(
+          path: '/result',
+          builder: (context, state) => const ResultScreen(),
         ),
       ],
     );
