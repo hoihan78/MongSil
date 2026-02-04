@@ -1,10 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:uuid/uuid.dart';
 import '../services/mock_dream_service.dart';
+import '../services/storage_service.dart';
+import '../providers/dream_input_provider.dart';
+import '../models/dream_entry.dart';
 import '../theme/app_theme.dart';
 
-class ResultScreen extends StatelessWidget {
+class ResultScreen extends ConsumerStatefulWidget {
   const ResultScreen({super.key});
+
+  @override
+  ConsumerState<ResultScreen> createState() => _ResultScreenState();
+}
+
+class _ResultScreenState extends ConsumerState<ResultScreen> {
+  final Uuid _uuid = const Uuid();
 
   @override
   Widget build(BuildContext context) {
@@ -533,15 +545,44 @@ class ResultScreen extends StatelessWidget {
     );
   }
 
-  void _saveDream(BuildContext context, DreamAnalysisResult result, bool isDark) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: const Text('꿈을 저장했어요 💾'),
-        backgroundColor: const Color(0xFFB4D8F8),
-        behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 2),
-      ),
+  void _saveDream(BuildContext context, DreamAnalysisResult result, bool isDark) async {
+    final inputState = ref.read(dreamInputProvider);
+    
+    // Create a DreamEntry
+    final entry = DreamEntry(
+      id: _uuid.v4(),
+      date: inputState.date,
+      content: inputState.content,
+      mood: inputState.selectedMood ?? DreamMood.peaceful,
+      imageUrl: result.imageUrl,
+      interpretation: result.interpretation,
+      luckyItem: result.luckyItem,
     );
+
+    // Save to local storage
+    final storageService = StorageService();
+    await storageService.saveDream(entry);
+
+    // Reset input state
+    ref.read(dreamInputProvider.notifier).reset();
+
+    // Show success message
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('꿈을 저장했어요 💾'),
+          backgroundColor: const Color(0xFFB4D8F8),
+          behavior: SnackBarBehavior.floating,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+
+      // Navigate to home after a short delay
+      await Future.delayed(const Duration(milliseconds: 1500));
+      if (mounted) {
+        context.go('/');
+      }
+    }
   }
 
   void _redrawDream(BuildContext context) {
