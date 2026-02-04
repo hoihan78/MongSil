@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'screens/home_screen.dart';
+import 'screens/input_screen.dart';
 import 'theme/app_theme.dart';
 
 void main() {
@@ -22,6 +23,10 @@ class MongSilApp extends StatelessWidget {
         GoRoute(
           path: '/',
           builder: (context, state) => const HomeScreen(),
+        ),
+        GoRoute(
+          path: '/input',
+          builder: (context, state) => const InputScreen(),
         ),
       ],
     );
