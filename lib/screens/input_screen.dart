@@ -73,11 +73,17 @@ class _InputScreenState extends ConsumerState<InputScreen> {
     final state = ref.watch(dreamInputProvider);
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
+    final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
 
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
+          padding: EdgeInsets.only(
+            left: 24,
+            right: 24,
+            top: 24,
+            bottom: keyboardHeight > 0 ? keyboardHeight + 16 : 24,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

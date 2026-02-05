@@ -547,7 +547,7 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
 
   void _saveDream(BuildContext context, DreamAnalysisResult result, bool isDark) async {
     final inputState = ref.read(dreamInputProvider);
-    
+
     // Create a DreamEntry
     final entry = DreamEntry(
       id: _uuid.v4(),
@@ -570,10 +570,19 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('꿈을 저장했어요 💾'),
+          content: Row(
+            children: [
+              const Icon(Icons.check_circle_rounded, color: Colors.white),
+              const SizedBox(width: 8),
+              const Text('꿈 일기를 저장했어요 💾'),
+            ],
+          ),
           backgroundColor: const Color(0xFFB4D8F8),
           behavior: SnackBarBehavior.floating,
           duration: const Duration(seconds: 2),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
         ),
       );
 

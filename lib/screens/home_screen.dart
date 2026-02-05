@@ -109,6 +109,28 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                 backgroundColor: Colors.transparent,
                 elevation: 0,
                 expandedHeight: 100,
+                actions: [
+                  IconButton(
+                    icon: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: (isDark
+                                ? const Color(0xFF252540)
+                                : Colors.white)
+                            .withOpacity(0.8),
+                        shape: BoxShape.circle,
+                      ),
+                      icon: Icon(
+                        Icons.settings_rounded,
+                        color: isDark
+                            ? const Color(0xFFE6E6FA)
+                            : const Color(0xFF4A4A6A),
+                      ),
+                    ),
+                    onPressed: () => context.push('/settings'),
+                  ),
+                  const SizedBox(width: 8),
+                ],
                 flexibleSpace: FlexibleSpaceBar(
                   title: Text(
                     '몽실',
